@@ -7,7 +7,7 @@ class Due2 < Formula
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/my-due2/due2-cli/releases/download/v#{version}/due2-#{version}-macos-arm64.tar.gz"
-      sha256 "fcceebc4b5f9b1000a82cbf6c01fea503034e13ebc4b8535e40cde17b2614a50"
+      sha256 "2a3b220e43de6da6d6127d90f79dddbc31649cd0d53dd6f303ba4e7b474f49d3"
     end
   end
 
