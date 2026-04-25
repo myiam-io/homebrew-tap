@@ -7,14 +7,14 @@ class Due2Cli < Formula
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/myiam-io/homebrew-tap/releases/download/due2-cli-v#{version}/due2-cli-#{version}-macos-arm64.tar.gz"
-      sha256 "PLACEHOLDER"
+      sha256 "0ba0f86270f30097decd792656ca6c7c4b0cc6b39e647290f3c30f37ea229b17"
     end
   end
 
   on_linux do
     if Hardware::CPU.intel?
       url "https://github.com/myiam-io/homebrew-tap/releases/download/due2-cli-v#{version}/due2-cli-#{version}-linux-x64.tar.gz"
-      sha256 "PLACEHOLDER"
+      sha256 "5d40d4030107248bc35842bc8cc01d27ca4207214f09b830a8ebeed92b0c7171"
     end
   end
 
