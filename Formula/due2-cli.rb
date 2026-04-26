@@ -1,20 +1,20 @@
 class Due2Cli < Formula
   desc "CLI tool for managing due items with end-to-end encryption"
   homepage "https://github.com/my-due2/due2-cli"
-  version "0.1.2"
+  version "0.1.3"
   license "MIT"
 
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/myiam-io/homebrew-tap/releases/download/due2-cli-v#{version}/due2-cli-#{version}-macos-arm64.tar.gz"
-      sha256 "b373e28be347ac49d3d9b96be1fc411dbc259e64b5453cda5e1ba140913b0d4d"
+      sha256 "22af441e38888fe0d1627cabde2af30939e1d9faa92bb5779acd7990aade7952"
     end
   end
 
   on_linux do
     if Hardware::CPU.intel?
       url "https://github.com/myiam-io/homebrew-tap/releases/download/due2-cli-v#{version}/due2-cli-#{version}-linux-x64.tar.gz"
-      sha256 "467ae8159a0510e57525e46e7bc9991fddc5a90debf35d6ba8caeed09bb9f39a"
+      sha256 "3087a0c5c7e781a6eb8cf1cfe07aefc5a20881634356a8d8dcc0be78f4fc3d2d"
     end
   end
 
