@@ -5,7 +5,7 @@ cask "due2" do
   url "https://github.com/myiam-io/homebrew-tap/releases/download/due2-v#{version}/due2-#{version}.dmg"
   name "Due2"
   desc "일정 마감 알림 앱"
-  homepage "https://github.com/my-due2/due2-flutter"
+  homepage "https://due2.app"
 
   depends_on macos: ">= :monterey"
 
