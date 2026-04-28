@@ -54,6 +54,7 @@ jobs:
         run: echo "version=${GITHUB_REF_NAME#due2-v}" >> "$GITHUB_OUTPUT"
 
       - name: Submit to winget-pkgs
+        continue-on-error: true
         uses: vedantmgoyal9/winget-releaser@main
         with:
           identifier: my-due2.Due2
