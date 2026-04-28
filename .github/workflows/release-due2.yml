@@ -1,0 +1,60 @@
+name: Release Due2
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  update-cask:
+    if: startsWith(github.event.release.tag_name, 'due2-v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract version
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#due2-v}" >> "$GITHUB_OUTPUT"
+
+      - name: Download DMG and compute SHA256
+        id: dmg
+        run: |
+          DMG_URL="https://github.com/${{ github.repository }}/releases/download/${{ github.event.release.tag_name }}/due2-${{ steps.version.outputs.version }}.dmg"
+          curl -fSL -o due2.dmg "$DMG_URL"
+          SHA=$(shasum -a 256 due2.dmg | awk '{print $1}')
+          echo "sha256=$SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Update Cask formula
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          SHA="${{ steps.dmg.outputs.sha256 }}"
+          sed -i "s/version \".*\"/version \"$VERSION\"/" Casks/due2.rb
+          sed -i "s/sha256 \".*\"/sha256 \"$SHA\"/" Casks/due2.rb
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Casks/due2.rb
+          git commit -m "cask: update due2 to ${{ steps.version.outputs.version }}"
+          git push
+
+  update-winget:
+    if: startsWith(github.event.release.tag_name, 'due2-v')
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract version
+        id: version
+        shell: bash
+        run: echo "version=${GITHUB_REF_NAME#due2-v}" >> "$GITHUB_OUTPUT"
+
+      - name: Submit to winget-pkgs
+        uses: vedantmgoyal9/winget-releaser@main
+        with:
+          identifier: my-due2.Due2
+          version: ${{ steps.version.outputs.version }}
+          installers-regex: '\.msix$'
+          token: ${{ secrets.WINGET_TOKEN }}
