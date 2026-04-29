@@ -57,7 +57,7 @@ jobs:
         continue-on-error: true
         uses: vedantmgoyal9/winget-releaser@main
         with:
-          identifier: my-due2.Due2
+          identifier: myiam.Due2
           version: ${{ steps.version.outputs.version }}
-          installers-regex: '\.msix$'
+          installers-regex: '-setup\.exe$'
           token: ${{ secrets.WINGET_TOKEN }}
