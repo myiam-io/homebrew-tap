@@ -60,6 +60,7 @@ jobs:
           identifier: myiam.Due2
           version: ${{ steps.version.outputs.version }}
           installers-regex: '-setup\.exe$'
+          fork-user: sheldon-myiam
           token: ${{ secrets.WINGET_TOKEN }}
 
   update-cli-winget:
@@ -80,4 +81,5 @@ jobs:
           identifier: myiam.Due2.CLI
           version: ${{ steps.version.outputs.version }}
           installers-regex: '-windows-x64\.zip$'
+          fork-user: sheldon-myiam
           token: ${{ secrets.WINGET_TOKEN }}
