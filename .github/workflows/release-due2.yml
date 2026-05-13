@@ -61,3 +61,23 @@ jobs:
           version: ${{ steps.version.outputs.version }}
           installers-regex: '-setup\.exe$'
           token: ${{ secrets.WINGET_TOKEN }}
+
+  update-cli-winget:
+    if: startsWith(github.event.release.tag_name, 'due2-cli-v')
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Extract version
+        id: version
+        shell: bash
+        run: echo "version=${GITHUB_REF_NAME#due2-cli-v}" >> "$GITHUB_OUTPUT"
+
+      - name: Submit to winget-pkgs
+        continue-on-error: true
+        uses: vedantmgoyal9/winget-releaser@main
+        with:
+          identifier: myiam.Due2.CLI
+          version: ${{ steps.version.outputs.version }}
+          installers-regex: '-windows-x64\.zip$'
+          token: ${{ secrets.WINGET_TOKEN }}
