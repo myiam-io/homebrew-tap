@@ -3,10 +3,18 @@ name: Release Due2
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Release tag (e.g. due2-v2.0.0, due2-cli-v0.6.2)'
+        required: true
+
+env:
+  TAG_NAME: ${{ github.event.release.tag_name || inputs.tag_name }}
 
 jobs:
   update-cask:
-    if: startsWith(github.event.release.tag_name, 'due2-v')
+    if: startsWith(github.event.release.tag_name || inputs.tag_name, 'due2-v')
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -17,12 +25,12 @@ jobs:
 
       - name: Extract version
         id: version
-        run: echo "version=${GITHUB_REF_NAME#due2-v}" >> "$GITHUB_OUTPUT"
+        run: echo "version=${TAG_NAME#due2-v}" >> "$GITHUB_OUTPUT"
 
       - name: Download DMG and compute SHA256
         id: dmg
         run: |
-          DMG_URL="https://github.com/${{ github.repository }}/releases/download/${{ github.event.release.tag_name }}/due2-${{ steps.version.outputs.version }}.dmg"
+          DMG_URL="https://github.com/${{ github.repository }}/releases/download/${{ env.TAG_NAME }}/due2-${{ steps.version.outputs.version }}.dmg"
           curl -fSL -o due2.dmg "$DMG_URL"
           SHA=$(shasum -a 256 due2.dmg | awk '{print $1}')
           echo "sha256=$SHA" >> "$GITHUB_OUTPUT"
@@ -43,7 +51,7 @@ jobs:
           git push
 
   update-winget:
-    if: startsWith(github.event.release.tag_name, 'due2-v')
+    if: startsWith(github.event.release.tag_name || inputs.tag_name, 'due2-v')
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
@@ -51,7 +59,7 @@ jobs:
       - name: Extract version
         id: version
         shell: bash
-        run: echo "version=${GITHUB_REF_NAME#due2-v}" >> "$GITHUB_OUTPUT"
+        run: echo "version=${TAG_NAME#due2-v}" >> "$GITHUB_OUTPUT"
 
       - name: Submit to winget-pkgs
         continue-on-error: true
@@ -64,7 +72,7 @@ jobs:
           token: ${{ secrets.WINGET_TOKEN }}
 
   update-cli-winget:
-    if: startsWith(github.event.release.tag_name, 'due2-cli-v')
+    if: startsWith(github.event.release.tag_name || inputs.tag_name, 'due2-cli-v')
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
@@ -72,7 +80,7 @@ jobs:
       - name: Extract version
         id: version
         shell: bash
-        run: echo "version=${GITHUB_REF_NAME#due2-cli-v}" >> "$GITHUB_OUTPUT"
+        run: echo "version=${TAG_NAME#due2-cli-v}" >> "$GITHUB_OUTPUT"
 
       - name: Submit to winget-pkgs
         continue-on-error: true
