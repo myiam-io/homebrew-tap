@@ -7,7 +7,7 @@ cask "due2" do
   desc "일정 마감 알림 앱"
   homepage "https://due2.app"
 
-  depends_on macos: ">= :monterey"
+  depends_on macos: :monterey
 
   app "due2.app"
 
