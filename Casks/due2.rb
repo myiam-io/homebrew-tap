@@ -1,6 +1,6 @@
 cask "due2" do
-  version "2.6.2"
-  sha256 "3fc1234df0dbb4c0631f26dfe724a8ef1e64161bae8b976a79eb17449fc72339"
+  version "2.7.0"
+  sha256 "f0f8ffaed69a3f1a31ceebfa6c9d1ec620768cff64c19c7f0dba9f565abf2fa9"
 
   url "https://github.com/myiam-io/homebrew-tap/releases/download/due2-v#{version}/due2-#{version}.dmg"
   name "Due2"
