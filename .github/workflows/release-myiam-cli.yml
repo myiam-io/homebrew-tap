@@ -1,0 +1,35 @@
+name: Release MyIAM CLI
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Release tag (e.g. myiam-cli-v1.0.0)'
+        required: true
+
+env:
+  TAG_NAME: ${{ github.event.release.tag_name || inputs.tag_name }}
+
+jobs:
+  update-winget:
+    if: startsWith(github.event.release.tag_name || inputs.tag_name, 'myiam-cli-v')
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Extract version
+        id: version
+        shell: bash
+        run: echo "version=${TAG_NAME#myiam-cli-v}" >> "$GITHUB_OUTPUT"
+
+      - name: Submit to winget-pkgs
+        continue-on-error: true
+        uses: vedantmgoyal9/winget-releaser@main
+        with:
+          identifier: myiam.Cli
+          version: ${{ steps.version.outputs.version }}
+          installers-regex: '-windows-x64\.zip$'
+          fork-user: sheldon-myiam
+          token: ${{ secrets.WINGET_TOKEN }}

@@ -1,0 +1,11 @@
+PackageIdentifier: myiam.Cli
+PackageVersion: "{{VERSION}}"
+PackageLocale: en-US
+Publisher: myiam
+PublisherUrl: https://myiam.io
+PackageName: MyIAM CLI
+PackageUrl: https://myiam.io
+License: Proprietary
+ShortDescription: CLI for MyIAM Administration
+ManifestType: defaultLocale
+ManifestVersion: 1.6.0
