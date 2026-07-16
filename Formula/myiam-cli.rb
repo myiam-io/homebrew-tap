@@ -7,14 +7,14 @@ class MyiamCli < Formula
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/myiam-io/homebrew-tap/releases/download/myiam-cli-v#{version}/myiam-cli-#{version}-macos-arm64.tar.gz"
-      sha256 "2858a40b829cc1d3abb75b5f460a1ed1b824d908fc9ec59279ab4a5d24eeadee"
+      sha256 "b4c231e5726403d3bc56a6e795726ea94abb2feb0e125bb5652fe8352fab2b37"
     end
   end
 
   on_linux do
     if Hardware::CPU.intel?
       url "https://github.com/myiam-io/homebrew-tap/releases/download/myiam-cli-v#{version}/myiam-cli-#{version}-linux-x64.tar.gz"
-      sha256 "1b3a11fd194ff25f8af3a430bfbb485066330c5958864ad79bf55c2224f726bd"
+      sha256 "e1a9bbcf6e061ff7e0c482336dcb3327e8eed7cd76312e5eea76c0f981b90c1e"
     end
   end
 
