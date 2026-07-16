@@ -13,6 +13,48 @@ env:
   TAG_NAME: ${{ github.event.release.tag_name || inputs.tag_name }}
 
 jobs:
+  update-formula:
+    if: startsWith(github.event.release.tag_name || inputs.tag_name, 'myiam-cli-v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+
+      - name: Extract version
+        id: version
+        run: echo "version=${TAG_NAME#myiam-cli-v}" >> "$GITHUB_OUTPUT"
+
+      - name: Download archives and compute SHA256
+        id: sha
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          BASE_URL="https://github.com/${{ github.repository }}/releases/download/${{ env.TAG_NAME }}"
+          curl -fSL -o macos-arm64.tar.gz "$BASE_URL/myiam-cli-${VERSION}-macos-arm64.tar.gz"
+          curl -fSL -o linux-x64.tar.gz "$BASE_URL/myiam-cli-${VERSION}-linux-x64.tar.gz"
+          echo "macos_arm64=$(shasum -a 256 macos-arm64.tar.gz | awk '{print $1}')" >> "$GITHUB_OUTPUT"
+          echo "linux_x64=$(shasum -a 256 linux-x64.tar.gz | awk '{print $1}')" >> "$GITHUB_OUTPUT"
+
+      - name: Update Homebrew Formula
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          FORMULA=Formula/myiam-cli.rb
+          MACOS_SHA="${{ steps.sha.outputs.macos_arm64 }}"
+          LINUX_SHA="${{ steps.sha.outputs.linux_x64 }}"
+
+          sed -i "s/version \".*\"/version \"${VERSION}\"/" "$FORMULA"
+          sed -i "/macos-arm64/{ n; s/sha256 \"[^\"]*\"/sha256 \"${MACOS_SHA}\"/; }" "$FORMULA"
+          sed -i "/linux-x64/{ n; s/sha256 \"[^\"]*\"/sha256 \"${LINUX_SHA}\"/; }" "$FORMULA"
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/myiam-cli.rb
+          git diff --cached --quiet || { git commit -m "myiam-cli: update to ${{ steps.version.outputs.version }}" && git push; }
+
   update-winget:
     if: startsWith(github.event.release.tag_name || inputs.tag_name, 'myiam-cli-v')
     runs-on: windows-latest
