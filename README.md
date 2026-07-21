@@ -1,6 +1,8 @@
 # homebrew-tap
 
-MyIAM Homebrew Tap — [due2-cli](https://github.com/my-due2/due2-cli) and [Due2](https://due2.app) formulae.
+MyIAM Homebrew Tap — [myiam-cli](https://myiam.io) formula.
+
+due2/due2-cli formulae moved to [due2-app/homebrew-due2](https://github.com/due2-app/homebrew-due2).
 
 ## Setup
 
@@ -12,23 +14,18 @@ brew trust --tap myiam-io/tap
 ## Install
 
 ```bash
-# CLI
-brew install due2-cli
-
-# macOS app
-brew install --cask due2
+brew install myiam-cli
 ```
 
 ## Upgrade
 
 ```bash
-brew upgrade due2-cli
-brew upgrade --cask due2
+brew upgrade myiam-cli
 ```
 
 ## Troubleshooting
 
-`Skipping due2-cli: tap formula is not trusted` 메시지가 나오면 trust 설정이 필요합니다:
+`Skipping myiam-cli: tap formula is not trusted` 메시지가 나오면 trust 설정이 필요합니다:
 
 ```bash
 brew trust --tap myiam-io/tap
