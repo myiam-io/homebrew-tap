@@ -1,20 +1,20 @@
 class MyiamCli < Formula
   desc "CLI for MyIAM Administration"
   homepage "https://myiam.io"
-  version "0.7.1"
+  version "0.8.0"
   license "Proprietary"
 
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/myiam-io/homebrew-tap/releases/download/myiam-cli-v#{version}/myiam-cli-#{version}-macos-arm64.tar.gz"
-      sha256 "50e4037283602499a69178119d667204c0bbd50086e698db9978ca0425fe19b5"
+      sha256 "43ec629041856b5882c29e8179fe3660fddbc11bfb2f96ed2d1c6ebf1c33ef37"
     end
   end
 
   on_linux do
     if Hardware::CPU.intel?
       url "https://github.com/myiam-io/homebrew-tap/releases/download/myiam-cli-v#{version}/myiam-cli-#{version}-linux-x64.tar.gz"
-      sha256 "d1cfc166ae9057a8cbe0998a59b637d1c87cac48255353d8806a6381fd073ebe"
+      sha256 "ed21c406b13b4bfa4c52ab4206e4d30a52e8eb866fd617f92356a0e3a75ddc2f"
     end
   end
 
